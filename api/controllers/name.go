@@ -1,26 +1,24 @@
 package controllers
 
 import (
-	"api-a/models"
-	"encoding/json"
+	"api/libs"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
 
 // Operations about Users
-type UserController struct {
+type NameController struct {
 	beego.Controller
 }
 
-func (u *UserController) Get() {
-	uid := u.GetString(":uid")
-	if uid != "" {
-		user, err := models.GetUser(uid)
-		if err != nil {
-			u.Data["json"] = err.Error()
-		} else {
-			u.Data["json"] = user
-		}
+func (c *NameController) Get() {
+	firstname := c.GetString(":firstname")
+	sex := c.GetString(":sex")
+	data, err := libs.GetChatGpt(map[string]string{"firstname": firstname, "sex": sex})
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = data
 	}
-	u.ServeJSON()
+	c.ServeJSON()
 }

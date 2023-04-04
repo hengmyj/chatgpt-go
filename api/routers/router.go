@@ -8,22 +8,21 @@
 package routers
 
 import (
-	"api-a/controllers"
+	"api/controllers"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
 
 func init() {
 	ns := beego.NewNamespace("/v1",
-		beego.NSNamespace("/object",
+		beego.NSNamespace("/creativity",
 			beego.NSInclude(
-				&controllers.ObjectController{},
+				&controllers.CreativityController{},
 			),
+			beego.NSRouter("/creativity", &controllers.CreativityController{}, "post:Post"),
 		),
-		beego.NSNamespace("/user",
-			beego.NSInclude(
-				&controllers.UserController{},
-			),
+		beego.NSNamespace("/name",
+			beego.NSRouter("/create", &controllers.NameController{}, "get:Get"),
 		),
 	)
 	beego.AddNamespace(ns)

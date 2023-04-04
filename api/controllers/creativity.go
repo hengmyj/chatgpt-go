@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
+	"api/libs"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
@@ -11,10 +11,16 @@ type CreativityController struct {
 	beego.Controller
 }
 
-func (o *ObjectController) Post() {
-	var ob models.Object
-	json.Unmarshal(o.Ctx.Input.RequestBody, &ob)
-	objectid := models.AddOne(ob)
-	o.Data["json"] = map[string]string{"ObjectId": objectid}
-	o.ServeJSON()
+func (c *CreativityController) Post() {
+	firstname := c.GetString(":firstname")
+	sex := c.GetString(":sex")
+	data, err := libs.GetChatGpt(map[string]string{"firstname": firstname, "sex": sex})
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = data
+	}
+	c.ServeJSON()
+	c.Data["json"] = map[string]string{"ObjectId": "dsd"}
+	c.ServeJSON()
 }
