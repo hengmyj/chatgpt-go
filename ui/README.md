@@ -1,6 +1,5 @@
 # vue3
 vue ui
-rsync -a --progress dist/ wisdom:/www/wwwroot/name.wisdom-os.top
 ## Project setup
 ```
 yarn install
